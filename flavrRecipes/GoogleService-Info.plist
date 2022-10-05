@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1049493341858-vo0j5sq7nobinaaot0a3dcjhien47691.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1049493341858-vo0j5sq7nobinaaot0a3dcjhien47691</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCzJ8OnI0_Y8KDvy5Ye8M0FA6SsFoPHm1c</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1049493341858</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.serhiiZholonko.flavrRecipes</string>
+	<key>PROJECT_ID</key>
+	<string>flavrrecipes-b16f4</string>
+	<key>STORAGE_BUCKET</key>
+	<string>flavrrecipes-b16f4.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1049493341858:ios:2bb846e03d9c30e17c39fb</string>
+	<key>DATABASE_URL</key>
+	<string>https://flavrrecipes-b16f4-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>
