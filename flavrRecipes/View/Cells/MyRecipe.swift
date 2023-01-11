@@ -34,13 +34,70 @@ class MyRecipe: UICollectionViewCell {
         label.text = "Pasta Salad"
         return label
     }()
-    let editButton : UIButton = {
+    lazy var editButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("***", for: .normal)
         button.tintColor = .black
         button.titleLabel?.font = .boldSystemFont(ofSize: 24)
         button.addTarget(self, action: #selector(handleEdit), for: .touchUpInside)
         return button
+    }()
+    let peopleView : UIView = {
+       let view = UIView()
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "ic_recipes_small")
+        view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        view.addSubview(imageView)
+        imageView.anchor(left: view.leftAnchor, paddingLeft: 12)
+        imageView.centerY(inView: view)
+        return view
+    }()
+    let timeView : UIView = {
+       let view = UIView()
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "ic_duration-small")
+        view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        view.addSubview(imageView)
+        imageView.anchor(left: view.leftAnchor, paddingLeft: 12)
+        imageView.centerY(inView: view)
+        return view
+    }()
+    let complexityView : UIView = {
+       let view = UIView()
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "ic_difficulty_small")
+        view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        view.addSubview(imageView)
+        imageView.anchor(left: view.leftAnchor, paddingLeft: 12)
+        imageView.centerY(inView: view)
+        return view
+    }()
+    let peopleLabel : UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .semibold)
+        label.text = "5"
+        return label
+    }()
+    let complexityLabel : UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .semibold)
+        label.text = "Medium"
+        return label
+    }()
+    let timeLabel : UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .semibold)
+        label.text = "20"
+        return label
     }()
     static let identifier = "RecipeCell"
     //MARK: Life cycle
@@ -63,6 +120,24 @@ class MyRecipe: UICollectionViewCell {
         editButton.anchor(top: photoImage.topAnchor, left: nil, botton: nil, right: photoImage.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBotton: 0, paddingRight: 12, height: 25)
         self.addSubview(nameLabel)
         nameLabel.anchor(top: photoImage.bottomAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 20)
+
+        peopleView.addSubview(peopleLabel)
+        peopleLabel.anchor(left: peopleView.leftAnchor, paddingLeft: 40)
+        peopleLabel.centerY(inView: peopleView)
+        complexityView.addSubview(complexityLabel)
+        complexityLabel.anchor(left: complexityView.leftAnchor, paddingLeft: 40)
+        complexityLabel.centerY(inView: complexityView)
+        timeView.addSubview(timeLabel)
+        timeLabel.anchor(left: timeView.leftAnchor, paddingLeft: 40)
+        timeLabel.centerY(inView: timeView)
+        let stackView = UIStackView(arrangedSubviews: [
+        timeView,
+        complexityView,
+        peopleView
+        ])
+        stackView.distribution = .fillEqually
+        self.addSubview(stackView)
+        stackView.anchor(top: nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 12, paddingLeft: 20, paddingRight: 20)
     }
 //MARK: - set Model
     
@@ -71,40 +146,23 @@ class MyRecipe: UICollectionViewCell {
         usernameLabel.text = model.user.username
         guard let urlString = URL(string: model.imageURL) else { return }
         photoImage.sd_setImage(with: urlString)
-        
+        timeLabel.text = "\(model.time) minutes"
+        complexityLabel.text = "\(model.complexity)"
+        peopleLabel.text = "\(model.person) People"
         
         //MARK: - bottom view
-        lazy var peopleView = makeImageText(imageName: "ic_recipes_small", text: "\(model.person) people")
-        lazy var timeView = makeImageText(imageName: "ic_duration-small", text: "\(model.time) minutes")
-        lazy var complexityView = makeImageText(imageName: "ic_difficulty_small", text: "\(model.complexity )")
         let stackView = UIStackView(arrangedSubviews: [
         timeView,
         complexityView,
         peopleView
         ])
         stackView.distribution = .fillProportionally
+        stackView.spacing = 10
         self.addSubview(stackView)
         stackView.anchor(top: nameLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 12, paddingLeft: 20, paddingRight: 20)
     }
     
-//MARK: - helpers func
-     func makeImageText(imageName: String, text: String) -> UIView {
-        let view = UIView()
-        let iv = UIImageView()
-         iv.image = UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal)
-         iv.contentMode = .scaleAspectFill
-        view.addSubview(iv)
-        iv.anchor(top: view.topAnchor, left: view.leftAnchor, botton: view.bottomAnchor, paddingTop: 0, paddingLeft: 0, paddingBotton: 0, width: 24, height: 24)
-        let label : UILabel = {
-           let label = UILabel()
-            label.text = text
-            return label
-        }()
-         view.addSubview(label)
-         label.anchor( left: iv.rightAnchor, right: view.rightAnchor,  paddingLeft: 5,  paddingRight: 5)
-         label.centerY(inView: view)
-      return view
-    }
+
     //MARK: - selector
     
     @objc private func handleEdit() {

@@ -20,6 +20,8 @@ struct Recipe {
     let instructions: [String]
     let creationDate : Date
     var hasLiked = false
+    var likesCount: Int = 0
+    let category: String
     init(user: User, dictionary: [String : Any]) {
         self.user = user
         self.imageURL = dictionary["imageURL"] as? String ?? ""
@@ -31,5 +33,6 @@ struct Recipe {
         self.instructions =  dictionary["instructions"] as? [String] ?? ["", ]
         let secondsForm1970 = dictionary["creationDate"] as? Double ?? 0
         self.creationDate = Date(timeIntervalSince1970: secondsForm1970)
+        self.category = dictionary["category"] as? String ?? ""
     }
 }

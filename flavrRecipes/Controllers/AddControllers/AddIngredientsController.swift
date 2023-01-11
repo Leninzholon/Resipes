@@ -19,7 +19,7 @@ class AddIngredientsController: UIViewController {
        let view = UIView()
         return view
     }()
-    let addButton : UIButton = {
+    lazy var addButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.backgroundColor = .orange
@@ -36,14 +36,14 @@ class AddIngredientsController: UIViewController {
         view.backgroundColor = .white
         return view
     }()
-    let saveButton : UIButton = {
+    lazy var saveButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Save", for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(handleSave), for: .touchUpInside)
         return button
     }()
-    let canselButton : UIButton = {
+    lazy var canselButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Cansel", for: .normal)
         button.tintColor = .black

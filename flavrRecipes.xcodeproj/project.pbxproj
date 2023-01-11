@@ -7,17 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		180C498129479F3900E4755F /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180C498029479F3900E4755F /* CustomButton.swift */; };
 		181B329128BBCE9A00498147 /* SharedPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181B328D28BBCE9A00498147 /* SharedPhotoController.swift */; };
 		181B329228BBCE9A00498147 /* PhotoSelectorHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181B328E28BBCE9A00498147 /* PhotoSelectorHeader.swift */; };
 		181B329428BBCE9A00498147 /* PhotoSelectorCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181B329028BBCE9A00498147 /* PhotoSelectorCollectionCell.swift */; };
 		181B329628BBD1E900498147 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181B329528BBD1E900498147 /* PhotoSelectorController.swift */; };
-		1828F30C28BBB1D900C79164 /* MyRecipesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1828F30B28BBB1D800C79164 /* MyRecipesViewController.swift */; };
+		181CE55029654283008FC21D /* TimePeopleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181CE54F29654283008FC21D /* TimePeopleController.swift */; };
+		181CE5522965785F008FC21D /* PersonsCounterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181CE5512965785F008FC21D /* PersonsCounterController.swift */; };
+		181CE5542965BEC6008FC21D /* FollowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181CE5532965BEC6008FC21D /* FollowViewController.swift */; };
+		1828F30C28BBB1D900C79164 /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1828F30B28BBB1D800C79164 /* CategoriesViewController.swift */; };
 		1828F31028BBB67100C79164 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1828F30F28BBB67100C79164 /* Recipe.swift */; };
 		184AC3CC28CA39F900B2539B /* AddIngredientsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184AC3CB28CA39F900B2539B /* AddIngredientsController.swift */; };
 		184AC3CE28CA3B8E00B2539B /* AddInstructionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184AC3CD28CA3B8E00B2539B /* AddInstructionController.swift */; };
+		184C5997295CD91E00BA298D /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184C5996295CD91E00BA298D /* CategoryCell.swift */; };
 		185C39EE28BDE8700050450E /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185C39ED28BDE8700050450E /* UserProfileController.swift */; };
 		185C39F328BE5B3F0050450E /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 185C39F228BE5B3F0050450E /* SDWebImage */; };
 		186489F328C7A694003B0098 /* DetaillViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186489F228C7A694003B0098 /* DetaillViewController.swift */; };
+		186D5BE12961944900ADAFB0 /* CategoryDetaillController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186D5BE02961944900ADAFB0 /* CategoryDetaillController.swift */; };
+		18819330296985C500A30E0F /* NetWorkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1881932F296985C500A30E0F /* NetWorkMonitor.swift */; };
+		188902F22954B18F00B7F777 /* RecipesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188902F12954B18E00B7F777 /* RecipesCollectionView.swift */; };
+		1893D91429582B4600436FA9 /* ProfileRecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1893D91329582B4600436FA9 /* ProfileRecipeCell.swift */; };
+		1895289E29445DB100742707 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1895289D29445DB000742707 /* UIView+Ext.swift */; };
 		18A8B66F28B90647003534ED /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 18A8B66E28B90647003534ED /* FirebaseAuth */; };
 		18A8B67128B90647003534ED /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 18A8B67028B90647003534ED /* FirebaseDatabase */; };
 		18A8B67328B90647003534ED /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 18A8B67228B90647003534ED /* FirebaseFirestore */; };
@@ -25,6 +35,12 @@
 		18A8B67928B90DE1003534ED /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8B67828B90DE1003534ED /* User.swift */; };
 		18A8B67E28B910FD003534ED /* MainTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A8B67D28B910FD003534ED /* MainTabBar.swift */; };
 		18AD653E28CDFB49004C3F43 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AD653D28CDFB49004C3F43 /* FirebaseService.swift */; };
+		18ADCE45295460C00089CB33 /* HomeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18ADCE44295460C00089CB33 /* HomeCollectionViewController.swift */; };
+		18ADCE47295467CF0089CB33 /* UIViewcontroller+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18ADCE46295467CF0089CB33 /* UIViewcontroller+Ext.swift */; };
+		18AE2652295E0B8A009B3894 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AE2651295E0B8A009B3894 /* FavoriteCell.swift */; };
+		18C7E77C296AAE21001E5AC9 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C7E77B296AAE21001E5AC9 /* CustomAlert.swift */; };
+		18C9992C2962D69700C18F4C /* SelectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C9992B2962D69700C18F4C /* SelectCategoryView.swift */; };
+		18C9992E29631C5700C18F4C /* DetaillCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C9992D29631C5700C18F4C /* DetaillCategoryCell.swift */; };
 		18CAE3E028B8A851004772A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CAE3DF28B8A851004772A1 /* AppDelegate.swift */; };
 		18CAE3E228B8A851004772A1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CAE3E128B8A851004772A1 /* SceneDelegate.swift */; };
 		18CAE3E428B8A851004772A1 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CAE3E328B8A851004772A1 /* StartViewController.swift */; };
@@ -35,29 +51,52 @@
 		18CAE40228B8DF43004772A1 /* SingUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CAE40128B8DF43004772A1 /* SingUpViewController.swift */; };
 		18CC460628B9CCA70016542C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CC460528B9CCA70016542C /* HomeViewController.swift */; };
 		18CC460828B9D4F20016542C /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CC460728B9D4F20016542C /* RecipeCell.swift */; };
+		18CDDF842959B33C00757D97 /* RecipeCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CDDF832959B33C00757D97 /* RecipeCollection.swift */; };
 		18D178C528C85FB9008CA88B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D178C428C85FB9008CA88B /* GoogleService-Info.plist */; };
+		18D344962946238B0043ACB4 /* AuthField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D344952946238B0043ACB4 /* AuthField.swift */; };
+		18D34498294630D00043ACB4 /* RightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D34497294630D00043ACB4 /* RightView.swift */; };
 		18D88AC528C07FF100ED239D /* MyRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D88AC428C07FF000ED239D /* MyRecipe.swift */; };
 		18D88AC728C0A69000ED239D /* FavoritesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D88AC628C0A69000ED239D /* FavoritesController.swift */; };
 		18D88AC928C0B07900ED239D /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D88AC828C0B07900ED239D /* SearchView.swift */; };
 		18D88ACB28C1153700ED239D /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D88ACA28C1153700ED239D /* SearchCell.swift */; };
+		18DB70FA294EE2E80009E0CB /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB70F9294EE2E80009E0CB /* ProfileViewController.swift */; };
+		18DB70FD294EE4A00009E0CB /* ProfileLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB70FC294EE4A00009E0CB /* ProfileLabel.swift */; };
+		18DB7102294F0C8A0009E0CB /* ProfileField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB7101294F0C8A0009E0CB /* ProfileField.swift */; };
+		18DB7104294F108A0009E0CB /* ProfilButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DB7103294F108A0009E0CB /* ProfilButton.swift */; };
 		18F1158E28CC5D6900DA18E3 /* IngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F1158D28CC5D6900DA18E3 /* IngredientCell.swift */; };
 		18F1159028CC653300DA18E3 /* InstructionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F1158F28CC653300DA18E3 /* InstructionCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		180C498029479F3900E4755F /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		181B328D28BBCE9A00498147 /* SharedPhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPhotoController.swift; sourceTree = "<group>"; };
 		181B328E28BBCE9A00498147 /* PhotoSelectorHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorHeader.swift; sourceTree = "<group>"; };
 		181B329028BBCE9A00498147 /* PhotoSelectorCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCollectionCell.swift; sourceTree = "<group>"; };
 		181B329528BBD1E900498147 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
-		1828F30B28BBB1D800C79164 /* MyRecipesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecipesViewController.swift; sourceTree = "<group>"; };
+		181CE54F29654283008FC21D /* TimePeopleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePeopleController.swift; sourceTree = "<group>"; };
+		181CE5512965785F008FC21D /* PersonsCounterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonsCounterController.swift; sourceTree = "<group>"; };
+		181CE5532965BEC6008FC21D /* FollowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowViewController.swift; sourceTree = "<group>"; };
+		1828F30B28BBB1D800C79164 /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		1828F30F28BBB67100C79164 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		184AC3CB28CA39F900B2539B /* AddIngredientsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientsController.swift; sourceTree = "<group>"; };
 		184AC3CD28CA3B8E00B2539B /* AddInstructionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInstructionController.swift; sourceTree = "<group>"; };
+		184C5996295CD91E00BA298D /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		185C39ED28BDE8700050450E /* UserProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
 		186489F228C7A694003B0098 /* DetaillViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetaillViewController.swift; sourceTree = "<group>"; };
+		186D5BE02961944900ADAFB0 /* CategoryDetaillController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetaillController.swift; sourceTree = "<group>"; };
+		1881932F296985C500A30E0F /* NetWorkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetWorkMonitor.swift; sourceTree = "<group>"; };
+		188902F12954B18E00B7F777 /* RecipesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesCollectionView.swift; sourceTree = "<group>"; };
+		1893D91329582B4600436FA9 /* ProfileRecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRecipeCell.swift; sourceTree = "<group>"; };
+		1895289D29445DB000742707 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		18A8B67828B90DE1003534ED /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		18A8B67D28B910FD003534ED /* MainTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBar.swift; sourceTree = "<group>"; };
 		18AD653D28CDFB49004C3F43 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		18ADCE44295460C00089CB33 /* HomeCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewController.swift; sourceTree = "<group>"; };
+		18ADCE46295467CF0089CB33 /* UIViewcontroller+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewcontroller+Ext.swift"; sourceTree = "<group>"; };
+		18AE2651295E0B8A009B3894 /* FavoriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCell.swift; sourceTree = "<group>"; };
+		18C7E77B296AAE21001E5AC9 /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
+		18C9992B2962D69700C18F4C /* SelectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCategoryView.swift; sourceTree = "<group>"; };
+		18C9992D29631C5700C18F4C /* DetaillCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetaillCategoryCell.swift; sourceTree = "<group>"; };
 		18CAE3DC28B8A851004772A1 /* flavrRecipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flavrRecipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18CAE3DF28B8A851004772A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18CAE3E128B8A851004772A1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,11 +109,18 @@
 		18CAE40128B8DF43004772A1 /* SingUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingUpViewController.swift; sourceTree = "<group>"; };
 		18CC460528B9CCA70016542C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		18CC460728B9D4F20016542C /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
+		18CDDF832959B33C00757D97 /* RecipeCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCollection.swift; sourceTree = "<group>"; };
 		18D178C428C85FB9008CA88B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		18D344952946238B0043ACB4 /* AuthField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthField.swift; sourceTree = "<group>"; };
+		18D34497294630D00043ACB4 /* RightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightView.swift; sourceTree = "<group>"; };
 		18D88AC428C07FF000ED239D /* MyRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecipe.swift; sourceTree = "<group>"; };
 		18D88AC628C0A69000ED239D /* FavoritesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesController.swift; sourceTree = "<group>"; };
 		18D88AC828C0B07900ED239D /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		18D88ACA28C1153700ED239D /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
+		18DB70F9294EE2E80009E0CB /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		18DB70FC294EE4A00009E0CB /* ProfileLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLabel.swift; sourceTree = "<group>"; };
+		18DB7101294F0C8A0009E0CB /* ProfileField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileField.swift; sourceTree = "<group>"; };
+		18DB7103294F108A0009E0CB /* ProfilButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilButton.swift; sourceTree = "<group>"; };
 		18F1158D28CC5D6900DA18E3 /* IngredientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCell.swift; sourceTree = "<group>"; };
 		18F1158F28CC653300DA18E3 /* InstructionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,6 +161,23 @@
 			path = AddControllers;
 			sourceTree = "<group>";
 		};
+		188C81062953442700134825 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				18ADCE44295460C00089CB33 /* HomeCollectionViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		1895289C29445D7E00742707 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1895289D29445DB000742707 /* UIView+Ext.swift */,
+				18ADCE46295467CF0089CB33 /* UIViewcontroller+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		18A8B67C28B910C5003534ED /* AuthControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +196,9 @@
 				18D88ACA28C1153700ED239D /* SearchCell.swift */,
 				18F1158D28CC5D6900DA18E3 /* IngredientCell.swift */,
 				18F1158F28CC653300DA18E3 /* InstructionCell.swift */,
+				184C5996295CD91E00BA298D /* CategoryCell.swift */,
+				18AE2651295E0B8A009B3894 /* FavoriteCell.swift */,
+				18C9992D29631C5700C18F4C /* DetaillCategoryCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -156,6 +222,7 @@
 		18CAE3DE28B8A851004772A1 /* flavrRecipes */ = {
 			isa = PBXGroup;
 			children = (
+				1895289C29445D7E00742707 /* Extensions */,
 				18CAE3FB28B8A93D004772A1 /* Model */,
 				18CAE3FA28B8A93A004772A1 /* View */,
 				18CAE3F928B8A937004772A1 /* Controllers */,
@@ -183,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				18AD653D28CDFB49004C3F43 /* FirebaseService.swift */,
+				1881932F296985C500A30E0F /* NetWorkMonitor.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -192,12 +260,15 @@
 			children = (
 				18A8B67C28B910C5003534ED /* AuthControllers */,
 				18A8B67D28B910FD003534ED /* MainTabBar.swift */,
-				1828F30B28BBB1D800C79164 /* MyRecipesViewController.swift */,
+				1828F30B28BBB1D800C79164 /* CategoriesViewController.swift */,
+				186D5BE02961944900ADAFB0 /* CategoryDetaillController.swift */,
 				186489F228C7A694003B0098 /* DetaillViewController.swift */,
 				184AC3CF28CB21CB00B2539B /* AddControllers */,
 				181B329728BBD2F400498147 /* PhotoselectorController */,
 				18CC460528B9CCA70016542C /* HomeViewController.swift */,
+				188902F12954B18E00B7F777 /* RecipesCollectionView.swift */,
 				185C39ED28BDE8700050450E /* UserProfileController.swift */,
+				181CE5532965BEC6008FC21D /* FollowViewController.swift */,
 				18D88AC628C0A69000ED239D /* FavoritesController.swift */,
 			);
 			path = Controllers;
@@ -208,6 +279,12 @@
 			children = (
 				18C82DF828BF266A00608D76 /* Cells */,
 				18D88AC828C0B07900ED239D /* SearchView.swift */,
+				18DB70FB294EE4610009E0CB /* CustomView */,
+				18D34497294630D00043ACB4 /* RightView.swift */,
+				181CE54F29654283008FC21D /* TimePeopleController.swift */,
+				181CE5512965785F008FC21D /* PersonsCounterController.swift */,
+				18C9992B2962D69700C18F4C /* SelectCategoryView.swift */,
+				18C7E77B296AAE21001E5AC9 /* CustomAlert.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -219,6 +296,30 @@
 				1828F30F28BBB67100C79164 /* Recipe.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		18DB70FB294EE4610009E0CB /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				188C81062953442700134825 /* Home */,
+				18D344952946238B0043ACB4 /* AuthField.swift */,
+				180C498029479F3900E4755F /* CustomButton.swift */,
+				18DB70FE294EE9C70009E0CB /* Profile */,
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
+		18DB70FE294EE9C70009E0CB /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				1893D91329582B4600436FA9 /* ProfileRecipeCell.swift */,
+				18DB70FC294EE4A00009E0CB /* ProfileLabel.swift */,
+				18DB7103294F108A0009E0CB /* ProfilButton.swift */,
+				18DB7101294F0C8A0009E0CB /* ProfileField.swift */,
+				18DB70F9294EE2E80009E0CB /* ProfileViewController.swift */,
+				18CDDF832959B33C00757D97 /* RecipeCollection.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,29 +404,52 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18C9992E29631C5700C18F4C /* DetaillCategoryCell.swift in Sources */,
+				18DB70FA294EE2E80009E0CB /* ProfileViewController.swift in Sources */,
+				18ADCE45295460C00089CB33 /* HomeCollectionViewController.swift in Sources */,
 				184AC3CE28CA3B8E00B2539B /* AddInstructionController.swift in Sources */,
 				18D88AC928C0B07900ED239D /* SearchView.swift in Sources */,
 				18CAE3FE28B8A9E4004772A1 /* Extentions.swift in Sources */,
 				18CAE3E428B8A851004772A1 /* StartViewController.swift in Sources */,
+				1895289E29445DB100742707 /* UIView+Ext.swift in Sources */,
 				18F1159028CC653300DA18E3 /* InstructionCell.swift in Sources */,
+				18C7E77C296AAE21001E5AC9 /* CustomAlert.swift in Sources */,
 				18CAE3E028B8A851004772A1 /* AppDelegate.swift in Sources */,
+				18AE2652295E0B8A009B3894 /* FavoriteCell.swift in Sources */,
 				181B329228BBCE9A00498147 /* PhotoSelectorHeader.swift in Sources */,
-				1828F30C28BBB1D900C79164 /* MyRecipesViewController.swift in Sources */,
+				18D344962946238B0043ACB4 /* AuthField.swift in Sources */,
+				1828F30C28BBB1D900C79164 /* CategoriesViewController.swift in Sources */,
+				188902F22954B18F00B7F777 /* RecipesCollectionView.swift in Sources */,
 				18D88ACB28C1153700ED239D /* SearchCell.swift in Sources */,
 				18CAE40028B8D103004772A1 /* LoginViewController.swift in Sources */,
 				181B329428BBCE9A00498147 /* PhotoSelectorCollectionCell.swift in Sources */,
 				184AC3CC28CA39F900B2539B /* AddIngredientsController.swift in Sources */,
+				184C5997295CD91E00BA298D /* CategoryCell.swift in Sources */,
 				18F1158E28CC5D6900DA18E3 /* IngredientCell.swift in Sources */,
+				18DB7102294F0C8A0009E0CB /* ProfileField.swift in Sources */,
+				18C9992C2962D69700C18F4C /* SelectCategoryView.swift in Sources */,
 				18AD653E28CDFB49004C3F43 /* FirebaseService.swift in Sources */,
+				18ADCE47295467CF0089CB33 /* UIViewcontroller+Ext.swift in Sources */,
+				18CDDF842959B33C00757D97 /* RecipeCollection.swift in Sources */,
+				18DB7104294F108A0009E0CB /* ProfilButton.swift in Sources */,
 				185C39EE28BDE8700050450E /* UserProfileController.swift in Sources */,
+				18819330296985C500A30E0F /* NetWorkMonitor.swift in Sources */,
+				18D34498294630D00043ACB4 /* RightView.swift in Sources */,
 				18A8B67E28B910FD003534ED /* MainTabBar.swift in Sources */,
 				18CC460828B9D4F20016542C /* RecipeCell.swift in Sources */,
+				181CE5522965785F008FC21D /* PersonsCounterController.swift in Sources */,
 				181B329128BBCE9A00498147 /* SharedPhotoController.swift in Sources */,
 				181B329628BBD1E900498147 /* PhotoSelectorController.swift in Sources */,
 				186489F328C7A694003B0098 /* DetaillViewController.swift in Sources */,
+				180C498129479F3900E4755F /* CustomButton.swift in Sources */,
 				1828F31028BBB67100C79164 /* Recipe.swift in Sources */,
 				18D88AC728C0A69000ED239D /* FavoritesController.swift in Sources */,
+				186D5BE12961944900ADAFB0 /* CategoryDetaillController.swift in Sources */,
+				181CE5542965BEC6008FC21D /* FollowViewController.swift in Sources */,
+				18DB70FD294EE4A00009E0CB /* ProfileLabel.swift in Sources */,
 				18D88AC528C07FF100ED239D /* MyRecipe.swift in Sources */,
+				181CE55029654283008FC21D /* TimePeopleController.swift in Sources */,
+				1893D91429582B4600436FA9 /* ProfileRecipeCell.swift in Sources */,
 				18CC460628B9CCA70016542C /* HomeViewController.swift in Sources */,
 				18CAE40228B8DF43004772A1 /* SingUpViewController.swift in Sources */,
 				18CAE3E228B8A851004772A1 /* SceneDelegate.swift in Sources */,
@@ -471,7 +595,6 @@
 				DEVELOPMENT_TEAM = 4BBUSC332Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = flavrRecipes/Info.plist;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We'd like accuss to you photos";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -499,7 +622,6 @@
 				DEVELOPMENT_TEAM = 4BBUSC332Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = flavrRecipes/Info.plist;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We'd like accuss to you photos";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

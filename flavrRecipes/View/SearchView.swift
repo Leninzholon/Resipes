@@ -16,7 +16,7 @@ class SearchView: UIView {
     //MARK: - Properties
     weak var delegate: SearchViewDelegate?
     var isShow = false
-    private let backButton : UIButton = {
+    private lazy var backButton : UIButton = {
        let button = UIButton()
         button.setImage(UIImage(named: "baseline_arrow_back_black_36dp-1"), for: .normal)
         button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)

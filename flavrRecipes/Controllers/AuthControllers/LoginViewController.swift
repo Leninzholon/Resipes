@@ -23,42 +23,23 @@ class LoginViewController: UIViewController {
         label.font = UIFont(name: "Helvetica Neue", size: 14)
         return label
     }()
-    let emailTextField: UITextField = {
-       let tf = UITextField()
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 30))
-        tf.leftView = v
-        tf.leftViewMode = .always
-        tf.placeholder = "Your Email"
-        tf.layer.borderWidth = 0.5
-        tf.layer.borderColor = UIColor.gray.cgColor
-        tf.heightAnchor.constraint(equalToConstant: 48).isActive = true
-
-        return tf
-    }()
-    let passwordTextField: UITextField = {
-       let tf = UITextField()
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 30))
-        tf.leftView = v
-        tf.leftViewMode = .always
-        tf.placeholder = "Password"
-        tf.layer.borderWidth = 0.5
-        tf.layer.borderColor = UIColor.gray.cgColor
+    let emailTextField: AuthField = {
+        let tf = AuthField(type: .email)
         tf.heightAnchor.constraint(equalToConstant: 48).isActive = true
         return tf
     }()
-    let loginButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("LOG IN", for: .normal)
-        button.backgroundColor = .orange
-        button.tintColor = .white
-        button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.layer.cornerRadius = 20
+    let passwordTextField: AuthField = {
+        let tf = AuthField(type: .password)
+        tf.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        return tf
+    }()
+    lazy var loginButton : CustomButton = {
+        let button = CustomButton(setTitle: "LOG IN")
         button.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        button.addGradient()
         button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         return button
     }()
-    let questionLabel: UIButton = {
+    lazy var questionLabel: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Don’t have an account?", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 14)
@@ -68,7 +49,8 @@ class LoginViewController: UIViewController {
     }()
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "baseline_arrow_back_black_36dp-1"), style: .plain, target: self, action: #selector(handleBackWard))
+        navigationController?.navigationBar.tintColor = .black
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,17 +82,22 @@ class LoginViewController: UIViewController {
     }
     
     //MARK: - selector
+    @objc private func handleBackWard() {
+        navigationController?.popToRootViewController(animated: true)
+    }
     @objc private func handleHaveAccount() {
         let controller = SingUpViewController()
         navigationController?.pushViewController(controller, animated: true)
     }
     @objc private func handleLogin() {
 
-        FrirebaseService.shared.login(emailTextField: emailTextField, passwordTextField: passwordTextField) { result in
+        FirebaseService.shared.login(emailTextField: emailTextField, passwordTextField: passwordTextField) { [weak self] result in
             switch result {
                 
             case .success(let success):
                 print(success)
+                let vc = MainTabBar()
+                self?.navigationController?.pushViewController(vc, animated: true)
             case .failure(let err):
                 print(err.localizedDescription)
             }

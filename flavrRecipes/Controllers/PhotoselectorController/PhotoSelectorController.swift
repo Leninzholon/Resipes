@@ -10,24 +10,30 @@ import Photos
 
 class PhotoSelectorController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     var images = [UIImage]()
+//    let picker = UIImagePickerController()
     var selectedImage : UIImage?
     var assets = [PHAsset]()
     var header: PhotoSelectorHeader?
+
     override func viewDidLoad() {
         super.viewDidLoad()
+//        picker.delegate = self
         collectionView.backgroundColor = .white
         settingNavBar()
         collectionView.register(PhotoSelectorCollectionCell.self, forCellWithReuseIdentifier: "CellId")
         collectionView.register(PhotoSelectorHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "headerId")
         fetchPhotos()
+        fetchPhotosTest()
     }
+
+    
+ 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        images.count
+        return images.count
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellId", for: indexPath) as! PhotoSelectorCollectionCell
         cell.currentPhoto.image = images[indexPath.item]
-//        cell.setupUI(image: images[indexPath.item])
         return cell
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -75,12 +81,33 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.width)
     }
+    fileprivate func fetchPhotosTest() {
+
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.fetchLimit = 10
+
+        
+        let allPhotos = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+       
+        allPhotos.enumerateObjects({ (asset, count, stop) in
+            print(asset)
+            let imageManager = PHImageManager.default()
+            let targetSize = CGSize(width: 350, height: 350)
+            let options = PHImageRequestOptions()
+            options.isSynchronous = true
+            imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFit, options: nil, resultHandler: { (image, info) in
+                
+                print(image)
+
+                
+            })
+            
+        })
+    }
     fileprivate func fetchPhotos(){
         print("Fetch Photo")
         let fetchOptions = PHFetchOptions()
         fetchOptions.fetchLimit = 10
-//        let sortDesctiptor = NSSortDescriptor(key: "creationDate", ascending: false)
-//        fetchOptions.sortDescriptors = [sortDesctiptor]
         let allPhotos = PHAsset.fetchAssets(with: .image, options: fetchOptions)
         
         allPhotos.enumerateObjects { asset, count, stop in
@@ -122,3 +149,19 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
         navigationController?.pushViewController(sharedPhotoController, animated: true)
     }
 }
+
+
+
+
+
+//extension PhotoSelectorController:  UIImagePickerControllerDelegate,
+//                                    UINavigationControllerDelegate  {
+//     func imagePickerController(_ picker: UIImagePickerController,
+//        didFinishPickingMediaWithInfo info: [String : AnyObject])
+//    {
+//             print("DEBAG: delegate")
+//    }
+//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//        print("DEBAG: delegate")
+//    }
+//    }

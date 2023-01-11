@@ -24,10 +24,10 @@ class RecipeCell: UICollectionViewCell {
         iv.clipsToBounds = true
         return iv
     }()
-    let likeImage: UIButton = {
+    lazy var likeImage: UIButton = {
         let button = UIButton(type: .system)
-        button.tintColor = .red
-        button.backgroundColor = UIColor(white: 0.8, alpha: 0.5)
+        button.tintColor = .systemPink
+        button.backgroundColor = .clear
         button.setImage(UIImage(named: "like_unselected"), for: .normal)
         button.layer.cornerRadius = 8
         
@@ -124,7 +124,7 @@ class RecipeCell: UICollectionViewCell {
         self.addSubview(foodImage)
         foodImage.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, height: 128)
         addSubview(likeImage)
-        likeImage.anchor(top: foodImage.topAnchor, left: nil, botton: nil, right: foodImage.rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBotton: 0, paddingRight: 12, width: 36, height: 36)
+        likeImage.anchor(top: foodImage.bottomAnchor, left: nil, botton: nil, right: foodImage.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBotton: 0, paddingRight: 12, width: 36, height: 36)
         self.addSubview(usernameLabel)
         usernameLabel.anchor(top: foodImage.bottomAnchor, left: leftAnchor, paddingTop: 12, paddingLeft: 20 )
         self.addSubview(userImage)
@@ -158,7 +158,8 @@ class RecipeCell: UICollectionViewCell {
 //MARK: - set Model
     
     func configureCell(with model: Recipe){
-        likeImage.setImage(model.hasLiked ? UIImage(named: "like_selected") : UIImage(named: "like_unselected"), for: .normal)
+        likeImage.setImage(model.hasLiked ? UIImage(named: "icon-like-selected") : UIImage(named: "Normal"), for: .normal)
+        
         nameLabel.text = model.title
         usernameLabel.text = model.user.username
         getImage(user: model.user)
@@ -185,29 +186,10 @@ class RecipeCell: UICollectionViewCell {
             self.userImage.layer.borderColor = UIColor.black.cgColor
         }
     }
-//MARK: - helpers func
-   
-    private func makeImageText(imageName: String, text: String) -> UIView {
-        let view = UIView()
-        let iv = UIImageView()
-         iv.image = UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal)
-         iv.contentMode = .scaleAspectFill
-        view.addSubview(iv)
-        iv.anchor(top: view.topAnchor, left: view.leftAnchor, botton: view.bottomAnchor, paddingTop: 0, paddingLeft: 0, paddingBotton: 0, width: 24, height: 24)
-        let label : UILabel = {
-           let label = UILabel()
-            label.text = text
-            return label
-        }()
-         view.addSubview(label)
-         label.anchor( left: iv.rightAnchor, right: view.rightAnchor,  paddingLeft: 5,  paddingRight: 5)
-         label.centerY(inView: view)
-      return view
-    }
+
     //MARK: - selector
     
     @objc fileprivate func handleLike() {
-        print("Handling to like photo")
         delegate?.didLike(from: self)
     }
 }

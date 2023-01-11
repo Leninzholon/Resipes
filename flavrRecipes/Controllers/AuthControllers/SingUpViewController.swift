@@ -24,58 +24,33 @@ class SingUpViewController: UIViewController {
         label.font = UIFont(name: "Helvetica Neue", size: 14)
         return label
     }()
-    let youNameTextField: UITextField = {
-       let tf = UITextField()
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 30))
-        tf.leftView = v
-        tf.leftViewMode = .always
-        tf.placeholder = "Your Name"
-        tf.layer.borderWidth = 0.5
-        tf.layer.borderColor = UIColor.gray.cgColor
+    let youNameTextField: AuthField = {
+        let tf = AuthField(type: .username)
         tf.heightAnchor.constraint(equalToConstant: 48).isActive = true
 
         return tf
     }()
-    let emailTextField: UITextField = {
-       let tf = UITextField()
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 30))
-        tf.leftView = v
-        tf.leftViewMode = .always
-        tf.placeholder = "Your Email"
-        tf.layer.borderWidth = 0.5
-        tf.layer.borderColor = UIColor.gray.cgColor
-        tf.heightAnchor.constraint(equalToConstant: 48).isActive = true
-
-        return tf
-    }()
-    let passwordTextField: UITextField = {
-       let tf = UITextField()
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 30))
-        tf.leftView = v
-        tf.leftViewMode = .always
-        tf.placeholder = "Password"
-        tf.layer.borderWidth = 0.5
-        tf.layer.borderColor = UIColor.gray.cgColor
-        tf.isSecureTextEntry = true
+    let emailTextField: AuthField = {
+        let tf = AuthField(type: .email)
         tf.heightAnchor.constraint(equalToConstant: 48).isActive = true
         return tf
     }()
-    let createAccountButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Create account", for: .normal)
-        button.backgroundColor = .orange
-        button.tintColor = .white
-        button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.layer.cornerRadius = 20
+    let passwordTextField: AuthField = {
+        let tf = AuthField(type: .password)
+        tf.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        return tf
+    }()
+    lazy var createAccountButton : CustomButton = {
+        let button = CustomButton(setTitle: "Create account")
         button.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        button.addGradient()
         button.addTarget(self, action: #selector(handleCreateUser), for: .touchUpInside)
         return button
     }()
     //MARK: - Livecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "baseline_arrow_back_black_36dp-1"), style: .plain, target: self, action: #selector(handleBackWard))
+        navigationController?.navigationBar.tintColor = .black
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,14 +82,20 @@ class SingUpViewController: UIViewController {
     
     
     //MARK: - Selector func
+    @objc private func handleBackWard() {
+        navigationController?.popToRootViewController(animated: true)
+    }
     @objc private func handleCreateUser() {
-        FrirebaseService.shared.createUser(emailTextField: emailTextField, passwordTextField: passwordTextField, youNameTextField: youNameTextField) { (result) in
+        FirebaseService.shared.createUser(emailTextField: emailTextField, passwordTextField: passwordTextField, youNameTextField: youNameTextField) { (result) in
             switch result {
             case .success(_):
                 let controller = MainTabBar()
                 self.navigationController?.pushViewController(controller, animated: true)
             case .failure(let err):
-                print(err.localizedDescription)
+                let ac = UIAlertController(title: "Alert", message: "Failerd, user doesn't create, try ", preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "ok", style: .default))
+                self.present(ac, animated: true)
+                print("err.localizedDescription", err)
             }
         }
 

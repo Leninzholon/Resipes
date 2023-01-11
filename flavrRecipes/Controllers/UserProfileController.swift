@@ -9,97 +9,65 @@ import UIKit
 import Firebase
 import FirebaseStorage
 
-class UserProfileController: UIViewController {
+class UserProfileController: ProfileViewController {
     //MARK: - Properties
     var isEd: Bool = false
-    var user : User? {
-        didSet{
-            getImage(user: user)
-            youNameTextField.text = user?.username
-            emailTextField.text = user?.email
-            setupEditFollowTitle()
-            title = "\(user?.username ?? "")"
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "baseline_arrow_back_black_36dp-1"), style: .plain, target: self, action: #selector(handleBack))
-
+    var recipes = [Recipe]()
+    var uid: String? {
+        didSet {
+            setupUser(uid: uid)
         }
     }
-    let recipeLabel : UILabel = {
-       let label = UILabel()
-        let atributedText = NSMutableAttributedString(string: "11\n",
-                                                      attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        atributedText.append(.init(string: "recipes", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)]))
-        label.attributedText = atributedText
-        label.numberOfLines = 2
-        label.textAlignment = .center
-        return label
+//    var user : User?{
+//        didSet{
+//            if user?.uid.lowercased() != FirebaseService.shared.currentUid?.lowercased(){
+//                navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "baseline_arrow_back_black_36dp-1"), style: .plain, target: self, action: #selector(handleBack))
+//                setupEditFollowTitle(uid: uid)
+//                nameLabel.text = user?.username
+//            }
+//            }
+//        }
+    let recipeSpinner: UIActivityIndicatorView = {
+        let activitiIndicator = UIActivityIndicatorView(style: .large)
+        activitiIndicator.color = .black
+        return activitiIndicator
     }()
-    let followersLabel : UILabel = {
-       let label = UILabel()
-        let atributedText = NSMutableAttributedString(string: "0\n",
-                                                      attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        atributedText.append(.init(string: "followers", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)]))
-        label.attributedText = atributedText
-        label.textAlignment = .center
-        label.numberOfLines = 2
-        return label
+    let collectionView: UICollectionView = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collection.register(ProfileRecipeCell.self, forCellWithReuseIdentifier: ProfileRecipeCell.identifier)
+        return collection
     }()
-    let followingLabel : UILabel = {
-       let label = UILabel()
-        let atributedText = NSMutableAttributedString(string: "0\n",
-                                                      attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        atributedText.append(.init(string: "folloving", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)]))
-        label.attributedText = atributedText
-        label.numberOfLines = 2
-        label.textAlignment = .center
-        return label
-    }()
-  lazy  var photoimage : UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "plus_photo")
-        return imageView
-}()
-    lazy var youNameTextField: UITextField = {
-       let tf = UITextField()
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 30))
-        tf.leftView = v
-        tf.leftViewMode = .always
-        tf.placeholder = "Your Name"
-        tf.layer.borderWidth = 0.5
-        tf.layer.borderColor = UIColor.gray.cgColor
-        tf.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        tf.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        tf.isEnabled = isEd
-        return tf
-    }()
-    lazy var  emailTextField: UITextField = {
-       let tf = UITextField()
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 30))
-        tf.leftView = v
-        tf.leftViewMode = .always
-        tf.placeholder = "Your Email"
-        tf.layer.borderWidth = 0.5
-        tf.layer.borderColor = UIColor.gray.cgColor
-        tf.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        tf.isEnabled = isEd
-        return tf
-    }()
-    //MAR
-    let saveButton : UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Save", for: .normal)
-        button.backgroundColor = .orange
-        button.tintColor = .white
-        button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.layer.cornerRadius = 20
-        button.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        button.addTarget(self, action: #selector(actionButton), for: .touchUpInside)
-        return button
-    }()
-    
     override func viewDidLoad() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
         super.viewDidLoad()
+        handleRefresh()
+        setupCountersUser()
+        setupUI()
+        setupSpiner()
+        editButton.addTarget(self, action: #selector(actionButton), for: .touchUpInside)
+        editButton.delegate = self
+      
+        if uid == nil {
+            uid = FirebaseService.shared.currentUid
+        }
+
+
+    }
+    private func setNavBar() {
+        navigationController?.navigationBar.tintColor = .black
+//        if user == nil {
+            navigationItem.title = "Profile".uppercased()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "LogOut", style: .plain, target: self, action: #selector(handleSettings))
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(handleEdit))
+//        }
+    }
+    
+    //MARK: - private func
+    //MARK: - UI
+    fileprivate func setupUI() {
         view.backgroundColor = .white
-   
+        collectionView.backgroundColor = .secondarySystemBackground
         view.addSubview(photoimage)
         photoimage.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, paddingTop: 40, paddingLeft: 40, width: 100, height: 100)
         let stackView = UIStackView(arrangedSubviews: [
@@ -110,56 +78,30 @@ class UserProfileController: UIViewController {
         stackView.axis = .horizontal
         stackView.spacing = 8
         view.addSubview(stackView)
-        stackView.anchor( left: photoimage.rightAnchor, paddingLeft: 40)
-        stackView.centerY(inView: photoimage)
-        let nameStack = setLine(first: "Name", and: youNameTextField)
-        let emailStack = setLine(first: "Email", and: emailTextField)
-        let tfStackView = UIStackView(arrangedSubviews: [
-            nameStack,
-            emailStack
-        ])
-        tfStackView.axis = .vertical
+        stackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 40, paddingLeft: 150, paddingRight: 40, height: 50)
         
-        view.addSubview(tfStackView)
-        tfStackView.anchor(top: photoimage.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 40, paddingLeft: 40, paddingRight: 40)
-        view.addSubview(saveButton)
-        saveButton.anchor(top: tfStackView.bottomAnchor, paddingTop: 40, width: 200)
-        saveButton.centerX(inView: view)
-        if user == nil {
-                    uploadUser()
-                    getImage()
-        }
+        view.addSubview(nameLabel)
+        nameLabel.anchor(top: stackView.bottomAnchor, left: stackView.leftAnchor, right: stackView.rightAnchor, paddingTop: 5,
+                          paddingLeft: 10 )
+        
+        let selectCollectionStack = UIStackView(arrangedSubviews: [
+        myCollectionButton,
+        followCollectionButton
+        ])
+        selectCollectionStack.axis = .horizontal
+        selectCollectionStack.spacing = 8
+        selectCollectionStack.distribution = .fillEqually
+        view.addSubview(selectCollectionStack)
+        selectCollectionStack.anchor(top: photoimage.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10, height: 50 )
+        view.addSubview(collectionView)
+        collectionView.anchor(top: selectCollectionStack.bottomAnchor, left: view.leftAnchor, botton: view.bottomAnchor, right: view.rightAnchor, paddingTop: 10)
         setNavBar()
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleAddPhoto))
         photoimage.isUserInteractionEnabled = true
         photoimage.addGestureRecognizer(tap)
         
-        
-        guard let user = user else {
-            return
-        }
-        youNameTextField.text = user.username
-        emailTextField.text = user.email
     }
-    private func setNavBar() {
-        navigationController?.navigationBar.tintColor = .black
-        if user == nil {
-            navigationItem.title = "Profile"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "LogOut", style: .plain, target: self, action: #selector(handleSettings))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(handleEdit))
-        }
-    }
-    
-    //MARK: - helpers func
-    
-    private func uploadUser() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        Database.fetchUserWithUID(uid: uid) { user in
-            self.youNameTextField.text = user.username
-            self.emailTextField.text = user.email
-        }
-    }
-    private func setLine(first string: String, and textFild: UITextField) -> UIStackView {
+    private func setLineUI(first string: String, and textFild: UITextField) -> UIStackView {
         let label : UILabel = {
             let leb = UILabel()
             leb.text = string
@@ -174,19 +116,85 @@ class UserProfileController: UIViewController {
         return stackView
         
     }
-    //MARK: - selector
+    //MARK: - get data
+    //??
+    private func handleRefresh() {
+        handleMyCollection()
+        myCollectionButton.addTarget(self, action: #selector(handleMyCollection), for: .touchUpInside)
+        followCollectionButton.addTarget(self, action: #selector(handleFollowCollection), for: .touchUpInside)
+    }
+    fileprivate func setupUser(uid: String?) {
+        guard let selfUid = FirebaseService.shared.currentUid else { return }
+        let currentId = uid ?? selfUid
+                FirebaseService.shared.fetchUse(uid: currentId) { user in
+                    print(user)
+//                    self.user = user
+                    self.youNameTextField.text = user.username
+                    self.emailTextField.text = user.email
+                    self.nameLabel.text = user.username
+                    self.getImage(user: user)
+                }
+    }
+    private func getImage(user: User? = nil)  {
+        if let user = user {
+            let urlString = user.photoUrl
+            self.photoimage.sd_setImage(with: URL(string: urlString))
+            self.photoimage.layer.cornerRadius =  self.photoimage.frame.width / 2
+            self.photoimage.clipsToBounds = true
+            self.photoimage.layer.borderWidth = 3
+            self.photoimage.layer.borderColor = UIColor.black.cgColor
+        }
+
+
+    }
+    private func setupSpiner() {
+        collectionView.addSubview(recipeSpinner)
+        recipeSpinner.centerX(inView: collectionView)
+        recipeSpinner.centerY(inView: collectionView)
+    }
+    //MARK: - selector action
+    @objc private func handleMyCollection() {
+        recipes.removeAll()
+        recipeSpinner.startAnimating()
+        FirebaseService.shared.fetchRecipes {[weak self] resipe in
+            if resipe.user.uid == FirebaseService.shared.currentUid{
+                self?.recipes.append(resipe)
+            }
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+                self?.recipeSpinner.stopAnimating()
+            }
+            self?.recipes.sort { p1, p2 in
+                return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+            }
+        }
+    }
+    @objc private func handleFollowCollection() {
+        recipeSpinner.startAnimating()
+        recipes.removeAll()
+        FirebaseService.shared.fetchFollowingUserId { [weak self] recipe in
+            if recipe.user.uid != self?.uid  {
+                self?.recipes.append(recipe)
+                self?.recipes.sort { p1, p2 in
+                    return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+                }
+                DispatchQueue.main.async {
+                    self?.collectionView.reloadData()
+                    self?.recipeSpinner.stopAnimating()
+
+                }
+            }
+        }
+     
+    }
     @objc private func handleBack() {
         dismiss(animated: true)
     }
     @objc private func handleSettings() {
         let ash = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let exit = UIAlertAction(title: "Exit", style: .default) { _ in
-                    do {
-                        try  Auth.auth().signOut()
-                        print("Success")
-                    } catch let err {
-                        print(err.localizedDescription)
-                    }
+        let exit = UIAlertAction(title: "Exit", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            FirebaseService.shared.SingOut(selfVC: self)
         }
         let cansel = UIAlertAction(title: "Cansel", style: .cancel)
         ash.addAction(exit)
@@ -200,153 +208,22 @@ class UserProfileController: UIViewController {
         emailTextField.isEnabled = isEd
     }
     @objc private func handleAddPhoto() {
-        guard user == nil else {
-            return
-        }
+//        guard user != nil else {
+//            return
+//        }
         let imagePickerController = UIImagePickerController()
         
         imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true)
     }
-    func getImage(user: User? = nil)  {
-        guard let currentUser = Auth.auth().currentUser?.uid  else { return }
-        let ref = Database.database().reference().child("users").child( user?.uid ?? currentUser)
-        ref.observeSingleEvent(of: .value) { snapshot, string in
-            guard let dictionary = snapshot.value as? [String : Any] else { return }
-            print(dictionary)
-            let user = User(uid: user?.uid ?? currentUser, dictionary: dictionary)
-             let urlString = user.photoUrl
-            print(user.photoUrl)
-            self.photoimage.sd_setImage(with: URL(string: urlString))
-            self.photoimage.layer.cornerRadius =  self.photoimage.frame.width / 2
-            self.photoimage.clipsToBounds = true
-            self.photoimage.layer.borderWidth = 3
-            self.photoimage.layer.borderColor = UIColor.black.cgColor
-        }
-    }
+
     @objc fileprivate func actionButton() {
-     
-        if saveButton.titleLabel?.text == "Unfollow"{
-            guard  let currentLoggedUserUid = Auth.auth().currentUser?.uid else {
-                return
-            }
-            guard let userId = user?.uid else {
-                return
-                
-            }
-            Database.database().reference().child("following").child(currentLoggedUserUid).child(userId).removeValue { err, ref in
-                if let err = err {
-                    print("Failed to unfollow user", err)
-                    return
-                } else {
-                    print("Successfully, unfollow", self.user?.username ?? "")
-                }
-                self.saveButton.setTitle("Follow", for: .normal)
-                self.saveButton.backgroundColor = #colorLiteral(red: 0, green: 0.6273162365, blue: 0.9439057708, alpha: 1)
-                self.saveButton.setTitleColor(.white, for: .normal)
-                self.saveButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
-            }
-            return
-        }
-        if saveButton.titleLabel?.text == "Follow" {
-            guard  let currentLoggedUserUid = Auth.auth().currentUser?.uid else {
-                return
-            }
-            guard let userId = user?.uid else {
-                return
-                
-            }
-            let ref = Database.database().reference().child("following").child(currentLoggedUserUid)
-            let values = [ userId : 1 ]
-            ref.updateChildValues(values) { err, ref in
-                if let err = err {
-                    print("Failer follow", err)
-                    return
-                }
-                print("Seccussfully, followed user", self.user?.username ?? "")
-            }
-            self.saveButton.setTitle("Unfollow", for: .normal)
-            self.saveButton.backgroundColor = .orange
-            self.saveButton.setTitleColor(.white, for: .normal)
-            
-            return
-        }
-
-        guard let email = emailTextField.text, email.count > 0 else { return }
-           guard let username = youNameTextField.text, username.count > 0 else { return }
-
-            guard let image = self.photoimage.image else { return }
-            guard let uploadData = image.scaledToSafeUploadSize, let imageData = uploadData.jpegData(compressionQuality: 0.3) else { return }
-            let fileName = NSUUID().uuidString
-            let storeRef = Storage.storage().reference().child("profile_image").child(fileName)
-            storeRef.putData(imageData, metadata: nil) { metadata, error in
-                if let error = error {
-                    print("Failed to uploud image", error)
-                    return
-                }
-
-                storeRef.downloadURL { url, err in
-                    if err != nil {
-                           print("Failed to download url:", err!)
-                           return
-                       } else {
-                          //Do something with url
-                           guard let url = url?.absoluteString else { return }
-                           guard let user = Auth.auth().currentUser else { return }
-                            let uid = user.uid
-                           let dictionaryValues = [ "username" : username, "email" : email, "photoUrl" : url]
-                          let values = [uid : dictionaryValues]
-                          Database.database().reference().child("users").updateChildValues(values) { (err, ref) in
-                              if let error = err {
-                                  print("Fain to save user info in db", error)
-                                  return
-                              }
-                              print("Successfull saved user to db")
-
-                          }
-                           }
-                }
-
-
-
-                print("Successfully, upload image")
-            }
-
-
+        print("DEBAG: edit...")
+//        editButton.actionButton(uid: uid)
+//        loadImage()
     }
-    fileprivate func setupEditFollowTitle() {
-        guard  let currentLoggedUserUid = Auth.auth().currentUser?.uid else {
-            return
-        }
-        guard let userId = user?.uid else {
-            return
-            
-        }
-        if user?.uid != Auth.auth().currentUser?.uid {
-            Database.database().reference().child("following").child(currentLoggedUserUid).child(userId).observeSingleEvent(of: .value) { snapshot in
-                if let isFollowing = snapshot.value as? Int, isFollowing == 1 {
-                    self.saveButton.setTitle("Unfollow", for: .normal)
-                    self.saveButton.backgroundColor = #colorLiteral(red: 0.9673562646, green: 0.6002095342, blue: 0.3723991513, alpha: 1)
-                    self.saveButton.tintColor = .white
-                    self.saveButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
-                    
-                } else {
-                    self.saveButton.setTitle("Follow", for: .normal)
-                    self.saveButton.backgroundColor = .orange
-                    self.saveButton.tintColor = .white
-                    self.saveButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
-                }
-               
-            }
-            
-           
-        }
-    }
-
 }
-
-
 extension UserProfileController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
        
@@ -361,9 +238,42 @@ extension UserProfileController: UIImagePickerControllerDelegate & UINavigationC
 
         photoimage.clipsToBounds = true
         photoimage.layer.borderWidth = 3
-        photoimage.layer.borderColor = UIColor.black.cgColor
+        photoimage.layer.borderColor = UIColor.gray.cgColor
+        loadImage()
        dismiss(animated: true)
     }
     
     }
 
+extension UserProfileController: ProfilButtonDelegate {
+    func resetCounters() {
+        self.setupCountersUser()
+    }
+}
+
+extension UserProfileController: SharedPhotoControllerDelegate {
+    func resetUsers() {
+        self.setupCountersUser()
+    }
+    
+    
+}
+
+
+extension UserProfileController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return recipes.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileRecipeCell.identifier, for: indexPath) as? ProfileRecipeCell else { return UICollectionViewCell() }
+        let recipe = recipes[indexPath.item]
+        cell.recipe = recipe
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let currentSize: CGFloat = view.width / 2
+        return .init(width: currentSize - 5, height: currentSize - 20)
+    }
+}

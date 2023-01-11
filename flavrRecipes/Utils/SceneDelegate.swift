@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -15,9 +16,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            let controller = MainTabBar()
-//           let controller = AddIngredientsController()
-            window.rootViewController = controller
+            if Auth.auth().currentUser == nil {
+                let controller = StartViewController()
+                let navVC = UINavigationController(rootViewController: controller)
+                window.rootViewController = navVC
+            } else {
+                let controller = MainTabBar()
+                window.rootViewController = controller
+            }
+           
             self.window = window
             window.makeKeyAndVisible()
         }

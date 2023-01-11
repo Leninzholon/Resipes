@@ -14,7 +14,7 @@ class StartViewController: UIViewController {
         iv.image = UIImage(named: "Flavr_logo")?.withRenderingMode(.alwaysOriginal)
         return iv
     }()
-    let loginButton : UIButton = {
+    lazy var loginButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Log In", for: .normal)
         button.backgroundColor = .orange
@@ -34,7 +34,7 @@ class StartViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
-    let SingUpButton : UIButton = {
+    lazy var SingUpButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Sign Up", for: .normal)
         button.backgroundColor = .white
@@ -49,7 +49,7 @@ class StartViewController: UIViewController {
     }()
     //MARK: - life cycle
    
-    
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor  = .white

@@ -9,154 +9,171 @@ import UIKit
 import Firebase
 
 
-class HomeViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-//MARK: - Properties
-    var isShow = false
-    var users = [User]()
-    var filterUser = [User]()
-    var recipes = [Recipe]()
-    lazy var searchView = SearchView()
-    let tableView = UITableView()
-    let searchStartLabel : UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 32, weight: .semibold)
-        label.text = "Enter username"
-       return label
-    }()
-    lazy var locationInputViewHeight : CGFloat = 140
+class HomeViewController: HomeCollectionViewController, UICollectionViewDelegateFlowLayout {
 
-//MARK: - lifecycle
-    
-    fileprivate func setUITableViewForViewController() {
-        tableView.addSubview(searchStartLabel)
-        searchStartLabel.centerY(inView: tableView)
-        searchStartLabel.centerX(inView: tableView)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let nameForLike = NSNotification.Name("UpdateFeedLike")
-//        NotificationCenter.default.post(name: nameForLike, object: nil)
+        self.delegate = self
+        searchView.delegate = self
         let namelike = NSNotification.Name("UpdateLike")
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeeed), name: namelike, object: nil)
         let name = NSNotification.Name("UpdateFeed")
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeeed), name: name, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleFollowButtonPressed), name: .follow, object: nil)
         collectionView.backgroundColor = .white
+        setupSpiner()
         configureNavigationBar()
-        collectionView.register(RecipeCell.self, forCellWithReuseIdentifier: RecipeCell.identifier)
-        handleRefresh() 
+        handleRefresh()
         fetchUser()
-        configureSearchView()
-        
         searchView.delegate = self
         setUITableViewForViewController()
+     
     }
+    deinit {
+         NotificationCenter.default.removeObserver(self)
+     }
     
     //MARK: - selector
-   
+    @objc func handleFollowButtonPressed() {
+        collectionView.reloadData()
+    }
     @objc func handleUpdateFeeed() {
         handleRefresh()
     }
     @objc private func handleSearchTapped() {
-        print("DEBAG: handleSearchTapped")
         behaviorSearch()
     }
     @objc private func handleNotificationTapped() {
-        print("DEBAG: handleNotificationTapped")
+        getAlert(title: "Alert", massage: "Notifications")
       
     }
-
-    fileprivate func behaviorSearch() {
-        isShow = !isShow
-                self.configureTableView()
-                self.tableView.frame.origin.y = self.locationInputViewHeight
-                self.tableView.frame.origin.y = self.view.frame.height
-                self.tableView.removeFromSuperview()
-        if isShow == true{
-            navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        UIView.animate(withDuration: 0.3) {
-            self.searchView.alpha = 1
-        } completion: { _ in
-            UIView.animate(withDuration: 0.3) {
-                self.configureTableView()
-                self.tableView.frame.origin.y = self.locationInputViewHeight
-            }
-        }
-        } else {
-            navigationController?.setNavigationBarHidden(false, animated: false)
-            UIView.animate(withDuration: 0.3) {
-                self.searchView.alpha = 0
-            } completion: { _ in
-                UIView.animate(withDuration: 0.3) {
-                    self.tableView.frame.origin.y = self.view.frame.height
-                    self.tableView.removeFromSuperview()
-                }
-            }
-        }
+    private func setupSpiner() {
+        view.addSubview(recipeSpinner)
+        recipeSpinner.centerX(inView: view)
+        recipeSpinner.centerY(inView: view)
     }
     private func handleRefresh() {
         self.recipes.removeAll()
-        fetchRecipes()
+        recipeSpinner.startAnimating()
+        fetchRecipes(with: nil)
         fetchFollowingUserId()
     }
-    fileprivate func configureSearchView() {
-        view.addSubview(searchView)
-        searchView.anchor(top: view.topAnchor, left: view.leftAnchor, botton: nil, right: view.rightAnchor, height: 140)
-        searchView.alpha = 0
-        searchView.delegate = self
+    private func fetchRecipes(with id: String?) {
+       if !NetWorkMonitor.shared.isConnected {
+        getCustomAlert(title: "You have not wifi", massage: "Pleace, again leter now you have not wifi")
     }
-    func configureTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(SearchCell.self, forCellReuseIdentifier: SearchCell.identifier)
-        view.addSubview(tableView)
-        tableView.frame = .init(x: 0, y: view.frame.height, width: view.frame.width, height: view.frame.height - 150)
-    }
-    private func fetchRecipes() {
-       guard let uid = Auth.auth().currentUser?.uid else { return }
+       guard let uid = Auth.auth().currentUser?.uid else { return getAlert(title: "Error!", massage: "Not user") }
         Database.fetchUserWithUID(uid: uid) { user in
-            FrirebaseService.shared.fetchRecipeWithUser(user: user) { recipe in
-                self.recipes.append(recipe)
-                self.recipes.sort { p1, p2 in
-                    return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+            FirebaseService.shared.fetchRecipeWithUser(vc: self, user: user, paginationNumber: nil) { result in
+                switch result {
+                    
+                case .success(let recipe):
+                    self.recipes.append(recipe)
+                    self.recipes.sort { p1, p2 in
+                        return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+                    }
+                    self.collectionView.reloadData()
+                    self.recipeSpinner.stopAnimating()
+                case .failure(let err):
+                    self.getAlert(title: "Error!", massage: err.title)
                 }
-                self.collectionView.reloadData()
+
             }
         }
    }
     fileprivate func fetchUser() {
-        FrirebaseService.shared.fetchUser { user in
+        FirebaseService.shared.fetchUsers { user in
+            
             DispatchQueue.main.async {
                 self.users.append(user)
             }
         }
-
-
     }
-    
     private func fetchFollowingUserId() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return getAlert(title: "Error!", massage: "Not Id")}
         Database.database().reference().child("following").child(uid).observeSingleEvent(of: .value) { snapshot in
             guard let userIdsDictionary = snapshot.value as? [ String : Any ] else { return }
             userIdsDictionary.forEach { (key, value) in
                 Database.fetchUserWithUID(uid: key) { user in
-                    FrirebaseService.shared.fetchRecipeWithUser(user: user) { recipe in
-                        self.recipes.append(recipe)
-                        self.recipes.sort { p1, p2 in
-                            return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+                    FirebaseService.shared.fetchRecipeWithUser(vc: self, user: user, paginationNumber: nil) { result in
+                        switch result {
+                            
+                        case .success(let recipe):
+                            self.recipes.append(recipe)
+                            self.recipes.sort { p1, p2 in
+                                return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+                            }
+                            self.collectionView.reloadData()
+                        case .failure(let err):
+                            self.getAlert(title: "Error!", massage: err.title)
                         }
-                        self.collectionView.reloadData()
                     }
                 }
             }
         }
     }
-
+//    var isFinishedPaging = false
+//    var curentUser: User?
+//    fileprivate func paginatePosts() {
+//        print("Start paging for more posts")
+//
+//        guard let uid = Auth.auth().currentUser?.uid else { return }
+//        let ref = Database.database().reference().child("posts").child(uid)
+//
+////        let value = "-Kh0B6AleC8OgIF-mZNT"
+////        let query = ref.queryOrderedByKey().queryStarting(atValue: value).queryLimited(toFirst: 6)
+//
+//        var query = ref.queryOrderedByKey()
+//
+//        if recipes.count > 0 {
+//            let value = recipes.last?.id
+//            query = query.queryStarting(atValue: value)
+//        }
+//
+//        query.queryLimited(toFirst: 4).observeSingleEvent(of: .value, with: { (snapshot) in
+//
+//            guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+//
+//            if allObjects.count < 4 {
+//                self.isFinishedPaging = true
+//            }
+//
+//            if self.recipes.count > 0 {
+//                allObjects.removeFirst()
+//            }
+//
+//            FirebaseService.shared.fetchUse(uid: uid, completion: { curentUser in
+//                self.curentUser = curentUser
+//            })
+//            guard let curentUser = self.curentUser else { return }
+//
+//            allObjects.forEach({ (snapshot) in
+//
+//                guard let dictionary = snapshot.value as? [String: Any] else { return }
+//                var recipe = Recipe(user: curentUser, dictionary: dictionary)
+//                recipe.id = snapshot.key
+//
+//                self.recipes.append(recipe)
+//
+////                print(snapshot.key)
+//            })
+//
+//            self.recipes.forEach({ (recipe) in
+//                print(recipe.id ?? "")
+//            })
+//
+//            self.collectionView?.reloadData()
+//
+//
+//        }) { (err) in
+//            print("Failed to paginate for posts:", err)
+//        }
+//    }
     //MARK: - set ui
     
     private func configureNavigationBar(){
-        navigationItem.title = "KetoRecipes"
+        navigationItem.title = "KetoRecipes".uppercased()
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearchTapped))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_notification")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleNotificationTapped))
     }
@@ -169,6 +186,13 @@ class HomeViewController: UICollectionViewController, UICollectionViewDelegateFl
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipeCell.identifier, for: indexPath) as! RecipeCell
         cell.delegate = self
+//        print("DEBAGG: ", indexPath.item )
+//        if indexPath.item > 0{
+//            fetchRecipes(with: recipes[indexPath.item].id)
+//            print("DEBAG: ", recipes.last?.id ?? "nil")
+//        }
+//        print("DEBAG: ", recipes.count)
+//        paginatePosts()
         let resipe = recipes[indexPath.item]
         cell.configureCell(with: resipe)
         return cell
@@ -190,7 +214,6 @@ extension HomeViewController: RecipeCellDelegate {
     func didLike(from cell: RecipeCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         var recipe = self.recipes[indexPath.item]
-        print(recipe.title)
         guard let postId = recipe.id else { return }
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let value = [uid: recipe.hasLiked ? 0 : 1]
@@ -198,61 +221,55 @@ extension HomeViewController: RecipeCellDelegate {
             if let err = err {
                 print("Failed to like post", err)
             }
-            print("Successfully, liked post")
             recipe.hasLiked = !recipe.hasLiked
             self.recipes[indexPath.item] = recipe
             self.collectionView.reloadItems(at: [indexPath])
             let name = NSNotification.Name("UpdateLike")
             NotificationCenter.default.post(name: name, object: nil)
     }
+        
+//        print("DEBAG: ", recipe.hasLiked)
+//        let likesValue = ["likesCount": recipe.likesCount]
+//        guard let uid = recipe.id else { return }
+//        Database.database().reference().child("recipes").child(recipe.user.uid).child(uid).updateChildValues(likesValue) {err, _ in
+//            if let err = err {
+//                print("Failed to like post", err)
+//            }
+////            recipe.likesCount += 1
+////            if recipe.likesCount > 0 {
+//                recipe.likesCount =  recipe.hasLiked == true ? recipe.likesCount + 1 : recipe.likesCount - 1
+//                print("DEBAG: ", recipe.likesCount)
+////            }
+////            self.recipes.remove(at: indexPath.item)
+////            self.recipes[indexPath.item] = recipe
+////            self.collectionView.reloadItems(at: [indexPath])
+////            print("DEBAG: ", recipe.likesCount)
+////            let name = NSNotification.Name("UpdateLike")
+////            NotificationCenter.default.post(name: name, object: nil)
+//        }
     }
     
     
 }
 
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if filterUser.count > 0 {
-            searchStartLabel.isHidden = true
-        } else {
-            searchStartLabel.isHidden = false
-        }
-        return filterUser.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: SearchCell.identifier, for: indexPath) as! SearchCell
-        let user = filterUser[indexPath.row]
-        cell.nameLabel.text = user.username
-        return cell
-    }
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return SearchCell.height
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let userController = UserProfileController()
-        let user = filterUser[indexPath.row]
-        userController.user = user
-        let navUserController = UINavigationController(rootViewController: userController)
-        navUserController.modalPresentationStyle = .fullScreen
-       present(navUserController, animated: true)
-    }
-}
+
+
+//MARK: - SearchViewDelegate
 extension HomeViewController: SearchViewDelegate {
     func searchText(searchText: String) {
         if searchText.isEmpty {
+            
             filterUser = users
         } else {
             self.filterUser = self.users.filter({ user in
-
                 return user.username.lowercased().contains(searchText.lowercased())
-
             })
         }
         self.tableView.reloadData()
     }
     
     func dismissSearchView() {
+        handleRefresh()
         behaviorSearch()
     }
     
@@ -260,4 +277,10 @@ extension HomeViewController: SearchViewDelegate {
 }
 
 
-
+extension HomeViewController: HomeCollectionViewControllerDelegate {
+    func uploadRecipes() {
+        handleRefresh()
+    }
+    
+    
+}
